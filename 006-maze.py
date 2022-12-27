@@ -1,4 +1,4 @@
 def maze():
-  print("Do maze stuff here")
+  print("Reeborg's World")
 
 maze()
