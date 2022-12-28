@@ -125,7 +125,7 @@ keepGoing = False
 lostGame = False
 while runAgain:
   cls()
-  print(len(deck))
+  
   if not keepGoing:
     random.shuffle(deck)
     lostGame = False
