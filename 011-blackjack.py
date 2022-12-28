@@ -1,5 +1,5 @@
 import random
-from tools import cls, getOneOfThese
+from tools import cls
 
 class Card:
   def __init__(self, name, values: list, suit):
@@ -80,6 +80,7 @@ dealer = []
 dealerTotals: list[int] = []
 
 def totalCards(cards: list[Card]):
+  """Returns all possible totals for the inputed list of cards"""
   totals = [0]
   for card in cards:
     if len(card.values) > 1:
@@ -92,6 +93,7 @@ def totalCards(cards: list[Card]):
   return totals
 
 def displayCards(cards: list[Card], hideFirst = True):
+  """Draws a list of Cards using ASCII art"""
   if len(cards) < 1: return
 
   display = ""
