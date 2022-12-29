@@ -23,9 +23,14 @@ def getNum(message):
     userInput = input(message)
   return float(userInput)
 
-def getOneOfThese(message, options):
+def getOneOfThese(message, options, ignoreCase = True):
   """Repeat input until given one of a list of options"""
   userInput = "ݧܔthis is ㍌definitely not an ⣯option in the list of options♥ꔰ"
-  while userInput not in options:
-    userInput = input(message)
-  return userInput
+  if ignoreCase:
+    while userInput not in [option.lower() for option in options]:
+      userInput = input(message).lower()
+    return userInput
+  else:
+    while userInput not in options:
+      userInput = input(message)
+    return userInput
