@@ -1,18 +1,36 @@
-import turtle
+import random
+from quiz_questions import questions
+from tools import getOneOfThese
 
-def changeColor(turt, color):
-  turt.color(color)
+class Question:
+  def __init__(self, questionText, isTrue: bool):
+    self.text = questionText
+    self.answer = isTrue
+  
+  def display(self):
+    print(self.text)
 
-def moveTurtle(turt, distance: int):
-  turt.forward(distance)
+NUM_QUESTIONS = 5
+def getQuiz(questionList):
+  random.shuffle(questionList)
+  quiz = questionList[0:NUM_QUESTIONS]
+  return quiz
 
 def main():
-  donny = turtle.Turtle()
-  donny.shape("turtle")
-  window = turtle.Screen()
-  changeColor(donny, "coral")
-  moveTurtle(donny, 100)
-  window.exitonclick()
+  runAgain = True
+  while runAgain:
+    quiz = getQuiz(questions)
+    numRight = 0
+    for q in quiz:
+      question = Question(q["text"], q["isTrue"])
+      print("[True] or [False]")
+      question.display()
+      user = getOneOfThese("",["true", "t", "false", "f", "yes", "no", "y", "n", "1", "0"])
+      user = (user == "true" or user == "t" or user == "yes" or user == "y" or user == "1")
+      if user == question.answer:
+        numRight += 1
+    if input(f"You got {numRight} of {NUM_QUESTIONS} correct ({(numRight / NUM_QUESTIONS * 100):0.0f}%).  Play again (Y/n)? ").lower() != "y":
+      runAgain = False
 
 if __name__ == "__main__":
   main()
