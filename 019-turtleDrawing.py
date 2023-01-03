@@ -1,80 +1,74 @@
 import turtle
 import random
 
-def changeColor(turt, red: int, green: int, blue: int):
-  turt.color(red, green, blue)
+leo = turtle.Turtle()
+window = turtle.Screen()
 
-def moveTurtle(turt, distance: int):
-  turt.forward(distance)
+FORWARD_AMOUNT = 10
+def moveForward():
+  leo.forward(FORWARD_AMOUNT)
 
 TURN_AMOUNT = 15
-def turnLeft(turt, amount = TURN_AMOUNT):
-  turt.left(amount)
-def turnRight(turt, amount = TURN_AMOUNT):
-  turt.right(amount)
+def turnLeft():
+  leo.left(TURN_AMOUNT)
+def turnRight():
+  leo.right(TURN_AMOUNT)
 
-def init(turt, x=0, y=0):
-  turt.shape("turtle")
-  turt.pensize(5)
-  turt.penup()
-  turt.goto(x, y)
-  turt.pendown()
+MIN_SIZE = 1
+CUR_SIZE = 1
+MAX_SIZE = 50
+def increaseSize():
+  global CUR_SIZE
+  CUR_SIZE += 1
+  if(CUR_SIZE > MAX_SIZE):
+    CUR_SIZE = MAX_SIZE
+  leo.pensize(CUR_SIZE)
+def decreaseSize():
+  global CUR_SIZE
+  CUR_SIZE -= 1
+  if(CUR_SIZE < MIN_SIZE):
+    CUR_SIZE = MIN_SIZE
+  leo.pensize(CUR_SIZE)
 
-def winner(turts, goal: int):
-  for t in turts:
-    if t.xcor() >= goal:
-      return t
-  return False
+MIN_FORWARD_AMOUNT = 30
+MAX_FORWARD_AMOUNT = 500
+FORWARD_AMOUNT_CHANGE = 10
+def increaseSpeed():
+  global FORWARD_AMOUNT
+  FORWARD_AMOUNT += FORWARD_AMOUNT_CHANGE
+  if(FORWARD_AMOUNT > MAX_FORWARD_AMOUNT):
+    FORWARD_AMOUNT = MAX_FORWARD_AMOUNT
+def decreaseSpeed():
+  global FORWARD_AMOUNT
+  FORWARD_AMOUNT -= FORWARD_AMOUNT_CHANGE
+  if(FORWARD_AMOUNT < MIN_FORWARD_AMOUNT):
+    FORWARD_AMOUNT = MIN_FORWARD_AMOUNT
 
-def victoryDance(turt):
-  turt.penup()
-  turt.goto(turt.xcor(), 0)
-  turt.pendown()
-  turnLeft(turt, 90)
-  for i in range(25):
-    moveTurtle(turt, MAX_MOVE - i)
-    turnLeft(turt)
-    moveTurtle(turt, MAX_MOVE - i)
-    turnRight(turt)
-    moveTurtle(turt, MAX_MOVE - i)
-    turnLeft(turt)
+def clearScreen():
+  leo.clear()
 
-MIN_MOVE = 5
-MAX_MOVE = 30
-
-donny = turtle.Turtle()
-mikey = turtle.Turtle()
-leo = turtle.Turtle()
-raph = turtle.Turtle()
-franklin = turtle.Turtle()
-turtonator = turtle.Turtle()
-turts = [raph, mikey, turtonator, franklin, leo, donny]
+#          BLACK     RED      ORANGE      YELLOW        LIME      GREEN       TEAL        CYAN        BLUE      NAVY      PURPLE        PINK      MAGENTA
+COLORS = [(0,0,0),(255,0,0),(255,128,0),(255,255,0),(128,255,0),(0,255,0),(0,255,128),(0,255,255),(0,128,255),(0,0,255),(128,0,255),(255,0,255),(255,0,128)]
+colorIdx = 0
+def changeColor():
+  global colorIdx
+  colorIdx = (colorIdx + 1) % len(COLORS)
+  leo.pencolor(COLORS[colorIdx])
+  
 
 def main():
-  window = turtle.Screen()
-  #window.onkey(turnLeft, "Left")
-  #window.onkey(turnRight, "Right")
+  leo.shape("classic")
   window.colormode(255)
+  window.onkey(moveForward, "Up")
+  window.onkey(turnLeft, "Left")
+  window.onkey(turnRight, "Right")
+  window.onkey(increaseSize, "+")
+  window.onkey(decreaseSize, "-")
+  window.onkey(increaseSpeed, "f")
+  window.onkey(decreaseSpeed, "s")
+  window.onkey(clearScreen, "BackSpace")
+  window.onkey(changeColor, "c")
   window.listen()
-
-  firstPos = window.canvheight
-  for t in turts:
-    init(t, -window.canvwidth, firstPos)
-    firstPos -= window.canvheight/len(turts) * 2
-  
-  changeColor(donny, 125, 0, 255)
-  changeColor(mikey, 255, 125, 0)
-  changeColor(leo, 0, 0, 255)
-  changeColor(raph, 255, 0, 0)
-  changeColor(franklin, 0, 255, 0)
-  changeColor(turtonator, 255, 255, 0)
-  
-  hasWinner = False
-  while not hasWinner:
-    for t in turts:
-      moveTurtle(t, random.randint(MIN_MOVE,MAX_MOVE))
-    hasWinner = winner(turts, window.canvwidth)
-  victoryDance(hasWinner)
 
   window.exitonclick()
 
