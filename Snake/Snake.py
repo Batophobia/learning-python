@@ -2,16 +2,13 @@ import turtle
 
 INITIAL_LENGTH = 3
 MOVE_AMOUNT = 20
+COLLISION_DISTANCE = 5
 
 class Snake:
   def __init__(self, startLength = INITIAL_LENGTH):
     self.snake = []
     for i in range(startLength):
-      temp = turtle.Turtle("square")
-      temp.color("white")
-      temp.penup()
-      temp.goto(20 * -i, 0)
-      self.snake.append(temp)
+      self.grow()
     
     self.head = self.snake[0]
   
@@ -20,6 +17,22 @@ class Snake:
       self.snake[i].goto(self.snake[i-1].pos())
     self.head.forward(MOVE_AMOUNT)
   
+  def grow(self):
+    temp = turtle.Turtle("square")
+    temp.color("white")
+    temp.penup()
+    if(len(self.snake)):
+      temp.goto(self.snake[len(self.snake)-1].pos())
+    else:
+      temp.goto(0,0)
+    self.snake.append(temp)
+
+  def detectCollision(self):
+    for body in self.snake[1:]:
+      if self.head.distance(body) < COLLISION_DISTANCE:
+        return True
+    return False
+
   def turnUp(self):
     if(self.head.heading() != 270):
       self.head.setheading(90)
