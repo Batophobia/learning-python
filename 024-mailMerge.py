@@ -1,15 +1,17 @@
-import io
+from pathlib import Path
 
 def main():
-  with open("day24/test.txt") as file:
+  with open("day24/names.txt") as file:
+    names = file.readlines()
+
+  with open("day24/template.txt") as file:
     contents = file.read()
-    print(contents)
 
-  with open("day24/test2.test.ignore", mode="w") as file:
-    file.write("This is added with code.\n")
-
-  with open("day24/test2.test.ignore", mode="a") as file:
-    file.write("This is appended with code.\n")
+  for name in names:
+    customized = contents.replace("[name]", name.strip())
+    Path("day24/outputs").mkdir(parents=True, exist_ok=True)
+    with open(f"day24/outputs/{name.strip()}.test.ignore", mode="w") as file:
+      file.write(customized)
 
 if __name__ == "__main__":
   main()
