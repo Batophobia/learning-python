@@ -2,3 +2,5 @@
 *.pyc
 *.test.ignore
 *.log
+*.local.env
+*.mp3

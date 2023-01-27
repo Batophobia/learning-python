@@ -34,3 +34,6 @@ def getOneOfThese(message, options, ignoreCase = True):
     while userInput not in options:
       userInput = input(message)
     return userInput
+
+def getFullPath():
+  return os.path.abspath(os.path.dirname(__file__))
