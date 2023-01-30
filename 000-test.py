@@ -1,18 +1,9 @@
-import turtle
+from PIL import Image
 
-def changeColor(turt, color):
-  turt.color(color)
-
-def moveTurtle(turt, distance: int):
-  turt.forward(distance)
-
-def main():
-  donny = turtle.Turtle()
-  donny.shape("turtle")
-  window = turtle.Screen()
-  changeColor(donny, "coral")
-  moveTurtle(donny, 100)
-  window.exitonclick()
-
-if __name__ == "__main__":
-  main()
+IMG_W = 600
+IMG_H = 600
+image = Image.open(r"D:\tmp\dpOfh.png")
+image = image.resize((IMG_W, IMG_H))
+imgColors = Image.Image.getcolors(image,360000)
+imgColors.sort(reverse=True)
+print(imgColors)
