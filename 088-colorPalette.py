@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 from PIL import Image, ImageTk
 import numpy as np
+from tools import updateTupleVal
 
 IMG_W = 600
 IMG_H = 600
@@ -35,11 +36,9 @@ def getColors(image):
   colors = []
   imgColors = Image.Image.getcolors(image,360000)
   imgColors.sort(reverse=True)
-  print(imgColors)
   for i in range(NUM_COLORS):
     tempLabel = colorElems[i]["label"]
     tempButton = colorElems[i]["button"]
-    print(f"{i} : {len(imgColors)}")
     if(i >= len(imgColors)):
       tempLabel.config(text="", fg="#FFFFFF")
       tempButton.config(text="", bg="#FFFFFF")
@@ -47,17 +46,22 @@ def getColors(image):
       #   Greyscale images seem to return single-number colors.
       #   Awaiting info on how those might translate:
       #   https://stackoverflow.com/questions/75287239/how-does-a-single-number-value-work-for-coloring
-      #if len(imgColors[i][1]) == 1:
-      #  imgColors[i][1] = (255,255,255)
+      if type(imgColors[i][1]) == int:
+        if imgColors[i][1] == 0:
+          imgColors[i] = updateTupleVal(imgColors[i], 1, (0,0,0))
+        elif imgColors[i][1] == 1:
+          imgColors[i] = updateTupleVal(imgColors[i], 1, (255,255,255))
+        else:
+          val = int(255 * imgColors[i][1] / 10)
+          imgColors[i] = updateTupleVal(imgColors[i], 1, (val, val, val))
       colors.append(imgColors[i][1])
-      print(imgColors[i][1][0:3])
       hexVal = '#%02x%02x%02x' % imgColors[i][1][0:3] # Get first 3, ignore alpha
       tempLabel.config(text=hexVal, fg=hexVal)
-      tempButton.config(text=hexVal, bg=hexVal)
+      tempButton.config(text=hexVal, command = lambda hexVal=hexVal: copyVal(hexVal), bg=hexVal)
 
-def copyVal():
-  global colors
-  print("TODO")
+def copyVal(hexVal):
+  window.clipboard_clear()
+  window.clipboard_append(hexVal)
 
 def main():
   global window
@@ -75,13 +79,13 @@ def main():
   fileDrop.grid(column=0, row=0, rowspan=10)
 
   for i in range(NUM_COLORS):
-    tempLabel = tk.Label(text = "Timer", font = (FONT_NAME, 30, "bold"))
+    tempLabel = tk.Label(text = "COLOR", font = (FONT_NAME, 20, "bold"))
     tempLabel.grid(column=1, row=i)
-    tempButton = tk.Button(text = f"Color {i+1}", command = copyVal, highlightthickness=0)
+    tempButton = tk.Button(text = f"Color {i+1}", highlightthickness=0)
     tempButton.grid(column=2, row=i)
     colorElems.append({"label": tempLabel, "button": tempButton})
 
-  img = getImage("./day84/test.png")
+  img = getImage(r".\day84\test.png")
   inputImage = fileDrop.create_image((0, 0), anchor=tk.NW, image=img)
   
   window.mainloop()

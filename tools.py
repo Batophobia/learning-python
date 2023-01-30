@@ -37,3 +37,8 @@ def getOneOfThese(message, options, ignoreCase = True):
 
 def getFullPath():
   return os.path.abspath(os.path.dirname(__file__))
+
+def updateTupleVal(tupl: tuple, idx: int, newVal):
+  tempList = list(tupl)
+  tempList[idx] = newVal
+  return tuple(tempList)
