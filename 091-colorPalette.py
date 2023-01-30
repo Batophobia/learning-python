@@ -36,6 +36,7 @@ def getColors(image):
   colors = []
   imgColors = Image.Image.getcolors(image,360000)
   imgColors.sort(reverse=True)
+  print(imgColors)
   for i in range(NUM_COLORS):
     tempLabel = colorElems[i]["label"]
     tempButton = colorElems[i]["button"]
