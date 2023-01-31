@@ -18,7 +18,6 @@ def imageGrab(left, top, width, height):
   image.save(r'.\day93\test.png')
   # sum all pixelseeeeee
   a = np.array(image.getcolors())
-  print(a.sum())
   return a.sum()
 
 def main():
@@ -36,7 +35,7 @@ def main():
   dinoLeft += 30
   
   while True:
-    if(imageGrab(dinoLeft, dinoTop, dinoWidth, dinoHeight) != 2767):
+    if(imageGrab(dinoLeft, dinoTop, dinoWidth, dinoHeight) != 2767): # 2767 == all white
       pyautogui.press('space')
     time.sleep(0.1)
 
