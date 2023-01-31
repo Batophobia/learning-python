@@ -34,7 +34,8 @@ def getColors(image):
   global colors
   global colorElems
   colors = []
-  imgColors = Image.Image.getcolors(image,360000)
+  ##   Greyscale images seem to return single-number colors.  Converting to RGB will prevent that
+  imgColors = Image.Image.getcolors(image.convert('RGB'),360000)
   imgColors.sort(reverse=True)
   print(imgColors)
   for i in range(NUM_COLORS):
@@ -44,17 +45,6 @@ def getColors(image):
       tempLabel.config(text="", fg="#FFFFFF")
       tempButton.config(text="", bg="#FFFFFF")
     else:
-      #   Greyscale images seem to return single-number colors.
-      #   Awaiting info on how those might translate:
-      #   https://stackoverflow.com/questions/75287239/how-does-a-single-number-value-work-for-coloring
-      if type(imgColors[i][1]) == int:
-        if imgColors[i][1] == 0:
-          imgColors[i] = updateTupleVal(imgColors[i], 1, (0,0,0))
-        elif imgColors[i][1] == 1:
-          imgColors[i] = updateTupleVal(imgColors[i], 1, (255,255,255))
-        else:
-          val = int(255 * imgColors[i][1] / 10)
-          imgColors[i] = updateTupleVal(imgColors[i], 1, (val, val, val))
       colors.append(imgColors[i][1])
       hexVal = '#%02x%02x%02x' % imgColors[i][1][0:3] # Get first 3, ignore alpha
       tempLabel.config(text=hexVal, fg=hexVal)
