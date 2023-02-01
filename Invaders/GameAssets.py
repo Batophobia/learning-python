@@ -8,6 +8,7 @@ ENEMY_SPRITES = [
     [r".\Invaders\Enemy3.gif"],
   ]
 EXPLODE_SPRITE = r".\Invaders\Explode.gif"
+PLAYER_SPRITE = r".\Invaders\Player.gif"
 
 ZOOM = 3
 
@@ -16,7 +17,8 @@ class GameAssets():
     for style in ENEMY_SPRITES:
       for sprite in style:
         self.addShape(window, sprite)
-    window.addshape(EXPLODE_SPRITE)
+    self.addShape(window, EXPLODE_SPRITE)
+    self.addShape(window, PLAYER_SPRITE)
   
   def addShape(self, window: Screen, sprite: str):
     larger = PhotoImage(file=sprite).zoom(ZOOM, ZOOM)

@@ -1,7 +1,7 @@
 from turtle import Turtle
 from time import sleep
 
-POSITION = (150,-395)
+POSITION = (0,-395)
 FONT = "Courier"
 
 class Scoreboard(Turtle):
@@ -12,17 +12,18 @@ class Scoreboard(Turtle):
     self.penup()
     self.goto(POSITION)
     self.speed("fastest")
-    self.score = 999999
+    self.score = 0
+    self.lives = 3
     self.addScore(0)
 
   def addScore(self, increaseAmount):
     self.clear()
     self.score += increaseAmount
-    self.write(f"Score: {self.score}", align="center", font=(FONT, 24, "normal"))
+    self.write(f"Lives: {self.lives} | Score: {self.score}", align="center", font=(FONT, 24, "normal"))
 
   def gameOver(self):
     self.clear()
-    self.write(f"Game Over.  Final Score - {self.score}", align="left", font=(FONT, 18, "normal"))
+    self.write(f"Game Over.  Final Score - {self.score}", align="center", font=(FONT, 18, "normal"))
     
   def message(self, text):
     self.clear()

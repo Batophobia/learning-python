@@ -3,16 +3,20 @@ import time
 from Invaders.GameAssets import GameAssets
 from Invaders.Player import Player
 from Invaders.EnemyManager import EnemyManager
+from Invaders.BulletManager import BulletManager
 from Invaders.Scoreboard import Scoreboard
 
 INITIAL_LENGTH = 3
 COLLECTION_RANGE = 15
-GAME_WIDTH = 700
-GAME_HEIGHT = 800
+WINDOW_WIDTH = 700
+WINDOW_HEIGHT = 800
+GAME_WIDTH = 350
+GAME_HEIGHT = 350
 
 def main():
   window = turtle.Screen()
-  window.setup(width=GAME_WIDTH,height=GAME_HEIGHT)
+  window.setup(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
+  window.screensize(GAME_WIDTH, GAME_HEIGHT)
   window.bgcolor("black")
   window.title("Invaders")
   window.colormode(255)
@@ -21,23 +25,34 @@ def main():
   # Load sprites
   GameAssets(window)
 
-  player = Player(window)
+  bullets = BulletManager(window.screensize())
   score = Scoreboard()
-  enemies = EnemyManager((GAME_WIDTH,GAME_HEIGHT))
-
+  player = Player(window, bullets, score)
+  enemies = EnemyManager(window.screensize(), bullets, score)
+  
   window.update()
   isAlive = True
-  timer=0
+  score.countdown(5)
   while isAlive:
-    enemies.move()
-    window.update()
-    time.sleep(.1)
-    timer += 1
-
-    if(timer > 9999):
+    onBottom = enemies.move()
+    if(onBottom):
       isAlive = False
     
+    bullets.move()
+    bullets.check(player)
+    for enemy in enemies.enemies:
+      bullets.check(enemy)
+    
+    player.tick()
+    if(player.lives < 1):
+      isAlive = False
 
+    window.update()
+    time.sleep(.01)
+    
+    if(len(enemies.enemies) < 1):
+      isAlive = False
+  
   score.gameOver()
   window.exitonclick()
 

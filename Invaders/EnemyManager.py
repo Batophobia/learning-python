@@ -1,35 +1,54 @@
 from Invaders.Enemy import Enemy
-import Invaders.GameAssets as GameAssets
+from Invaders.GameAssets import ENEMY_SPRITES
+from Invaders.BulletManager import BulletManager
+from Invaders.Scoreboard import Scoreboard
+from random import randint
 
-X_BUFFER = 100
-Y_BUFFER = 100
+X_BUFFER = 50
+Y_BUFFER = 35
 MAX_DELAY = 10
 SPRITE_PADDING = 40
+NUM_ROW = 5
+NUM_COL = 11
+SHOOT_TIMER = 20
 
 class EnemyManager():
-  def __init__(self, gameSize: tuple[int,int]):
+  def __init__(self, gameSize: tuple[int,int], bullets: BulletManager, score: Scoreboard):
     self.dir = 1
     self.gameSize = gameSize
     self.moveDelay = MAX_DELAY
     self.moveTimer = self.moveDelay
+    self.shootDelay = SHOOT_TIMER
+    self.shootTimer = self.shootDelay
     self.reverse = False
+    self.score = score
+    self.bullets = bullets
     self.resetEnemies()
     
   def resetEnemies(self):
     self.enemies = []
-    style = 2
-    xMax = int(self.gameSize[0] / 2) - X_BUFFER
-    yMax = int(self.gameSize[1] / 2) - Y_BUFFER
-    for y in range(yMax, 0, -int(yMax / (len(GameAssets.ENEMY_SPRITES) + 1))):
-      for x in range(xMax, -xMax, -int(xMax * 2 / 11)):
-        self.spawn(x, y, round(y/100) - 1)
+    xMax = self.gameSize[0] # - X_BUFFER
+    yMax = self.gameSize[1] # - Y_BUFFER
+    for y in range(1, NUM_ROW+1, 1):
+      for x in range(1, NUM_COL+1, 1):
+        self.spawn(x * X_BUFFER - xMax, y * Y_BUFFER + yMax / 2, int((y-1)/2))
   
   def spawn(self, x: int, y: int, style: int):
-    enemy = Enemy(GameAssets.ENEMY_SPRITES[style], (x, y))
+    enemy = Enemy(ENEMY_SPRITES[style], (x, y), self.score)
     self.enemies.append(enemy)
 
+  def shoot(self):
+    self.shootTimer = self.shootDelay
+    self.bullets.spawn(self.enemies[randint(0, len(self.enemies) - 1)].pos(), False)
+
   def move(self):
+    self.moveDelay = len(self.enemies) / (NUM_ROW * NUM_COL) * MAX_DELAY
     self.moveTimer -= 1
+
+    self.shootDelay = len(self.enemies) / (NUM_ROW * NUM_COL) * SHOOT_TIMER
+    self.shootTimer -= 1
+    if self.shootTimer < 1: self.shoot()
+
     if self.moveTimer > 0: return
 
     self.moveTimer = self.moveDelay
@@ -38,12 +57,18 @@ class EnemyManager():
       self.dir *= -1
       for enemy in self.enemies:
         enemy.moveDown()
+        if(enemy.pos()[1] <= -self.gameSize[1]):
+          return True
     else:
+      toRemove = []
       for enemy in self.enemies:
-        enemy.move(self.dir)
-        if(abs(enemy.pos[0]) + SPRITE_PADDING >= self.gameSize[0] / 2):
-          self.reverse = True
-  
-  def pickup(self):
-    self.move()
-    return self.points
+        if(enemy.alive):
+          enemy.move(self.dir)
+          if(abs(enemy.pos()[0]) + SPRITE_PADDING >= self.gameSize[0]):
+            self.reverse = True
+        else:
+          enemy.hideturtle()
+          toRemove.append(enemy)
+          
+      for e in toRemove:
+        self.enemies.remove(e)
