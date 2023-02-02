@@ -1,0 +1,35 @@
+{
+  "Australia": [
+    "en-au:Zoe",
+    "en-au:Isla",
+    "en-au:Evie",
+    "en-au:Jack"
+  ],
+  "Canada": [
+    "en-ca:Rose",
+    "en-ca:Clara",
+    "en-ca:Emma",
+    "en-ca:Mason"
+  ],
+  "Great Britain": [
+    "en-gb:Alice",
+    "en-gb:Nancy",
+    "en-gb:Lily",
+    "en-gb:Harry"
+  ],
+  "India": [
+    "en-in:Eka",
+    "en-in:Jai",
+    "en-in:Ajit"
+  ],
+  "Ireland": [
+    "en-ie:Oran"
+  ],
+  "United States": [
+    "en-us:Linda",
+    "en-us:Amy",
+    "en-us:Mary",
+    "en-us:John",
+    "en-us:Mike"
+  ]
+}
