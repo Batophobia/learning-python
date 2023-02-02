@@ -1,35 +1,53 @@
 {
-  "Australia": [
-    "en-au:Zoe",
-    "en-au:Isla",
-    "en-au:Evie",
-    "en-au:Jack"
-  ],
-  "Canada": [
-    "en-ca:Rose",
-    "en-ca:Clara",
-    "en-ca:Emma",
-    "en-ca:Mason"
-  ],
-  "Great Britain": [
-    "en-gb:Alice",
-    "en-gb:Nancy",
-    "en-gb:Lily",
-    "en-gb:Harry"
-  ],
-  "India": [
-    "en-in:Eka",
-    "en-in:Jai",
-    "en-in:Ajit"
-  ],
-  "Ireland": [
-    "en-ie:Oran"
-  ],
-  "United States": [
-    "en-us:Linda",
-    "en-us:Amy",
-    "en-us:Mary",
-    "en-us:John",
-    "en-us:Mike"
-  ]
+  "Australia": {
+    "code": "en-au",
+    "voices": [
+      "Zoe",
+      "Isla",
+      "Evie",
+      "Jack"
+    ]
+  },
+  "Canada": {
+    "code": "en-ca",
+    "voices": [
+      "Rose",
+      "Clara",
+      "Emma",
+      "Mason"
+    ]
+  },
+  "Great Britain": {
+    "code": "en-gb",
+    "voices": [
+      "Alice",
+      "Nancy",
+      "Lily",
+      "Harry"
+    ]
+  },
+  "India": {
+    "code": "en-in",
+    "voices": [
+      "Eka",
+      "Jai",
+      "Ajit"
+    ]
+  },
+  "Ireland": {
+    "code": "en-ie",
+    "voices": [
+      "Oran"
+    ]
+  },
+  "United States": {
+    "code": "en-us",
+    "voices": [
+      "Linda",
+      "Amy",
+      "Mary",
+      "John",
+      "Mike"
+    ]
+  }
 }
