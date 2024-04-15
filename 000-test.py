@@ -13,6 +13,7 @@ OUTFILE="./output.txt"
 
 def run():
   num = random.randint(0,10)
+  print(str(num))
   with open(OUTFILE, mode="w") as file:
       file.write(str(num))
 
